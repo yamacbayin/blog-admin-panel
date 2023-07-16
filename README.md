@@ -15,11 +15,11 @@ The following technologies were utilized in the development of this project:
 ## Functionality
 The Blog Admin Panel offers the following features:
 
-Post Management: Create, update, and delete blog posts.
-User Management: Manage user accounts.
-Category Management: Create, update, and delete blog categories.
-Comment Management: Create, update, and delete comments on blog posts.
-Backend Integration: The panel interacts with the backend server to ensure data consistency and accuracy.
+- Post Management: Create, update, and delete blog posts.
+- User Management: Manage user accounts.
+- Category Management: Create, update, and delete blog categories.
+- Comment Management: Create, update, and delete comments on blog posts.
+- Backend Integration: The panel interacts with the backend server to ensure data consistency and accuracy.
 
 ## Installation
 To install and run the Blog Admin Panel locally, please follow these steps:
