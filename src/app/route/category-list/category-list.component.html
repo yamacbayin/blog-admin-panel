@@ -1,0 +1,111 @@
+<mat-card class="info-card">
+  <mat-card-header class="info-header">
+    <mat-card-subtitle class="info-subtitle" fxLayoutAlign="center center"
+      >Listing {{ listingRangeStart }}-{{ listingRangeEnd }} of
+      {{ categoryCount }} categories</mat-card-subtitle
+    >
+  </mat-card-header>
+  <mat-card-content>
+    <div class="info-content-container">
+      <div class="filter-sort-container">
+        <div class="filter-div-1">
+          <mat-form-field>
+            <mat-label>Filter by Id</mat-label>
+            <input
+              matInput
+              [(ngModel)]="filterCategoryId"
+              (ngModelChange)="onFiltersChange()"
+              placeholder="Enter category ID"
+              inputMode="numeric"
+              pattern="[0-9]*"
+            />
+          </mat-form-field>
+        </div>
+        <div class="filter-div-2">
+          <mat-form-field>
+            <mat-label>Filter by Name</mat-label>
+            <input
+              matInput
+              [(ngModel)]="filterName"
+              (ngModelChange)="onFiltersChange()"
+              placeholder="Enter category name"
+            />
+          </mat-form-field>
+        </div>
+
+        <div class="sort-div">
+          <mat-form-field>
+            <mat-label>Sort by</mat-label>
+            <mat-select [(value)]="selectedSort">
+              <mat-option
+                [value]="option.value"
+                *ngFor="let option of sortOptions"
+                >{{ option.viewValue }}</mat-option
+              >
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="create-new-container">
+        <button
+          mat-raised-button
+          color="primary"
+          routerLink="/categories/create"
+        >
+          Add New Category
+        </button>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
+
+<div class="left-side-container">
+  <div class="left">
+    <div class="scrollable-list">
+      <div
+        class="category-cards"
+        *ngFor="
+          let category of filteredCategoryList
+            | sortCategories : selectedSort
+            | slice : pageIndex * pageSize : pageIndex * pageSize + pageSize
+        "
+      >
+        <!-- | sortUserBy : selectedSort  -->
+        <app-category-card
+          [category]="category"
+          (editCategory)="onEditCategory($event)"
+          (deleteCategory)="onDeleteCategory($event)"
+        ></app-category-card>
+      </div>
+      <div class="pagination-buttons">
+        <button
+          mat-flat-button
+          color="primary"
+          (click)="onPreviousPageClick()"
+          [disabled]="pageIndex === 0"
+          class="pagination-button-previous"
+        >
+          Previous
+        </button>
+        <button
+          mat-flat-button
+          color="primary"
+          (click)="onNextPageClick()"
+          [disabled]="pageIndex === totalPage - 1"
+          class="pagination-button-next"
+        >
+          Next
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="right-side-edit-container">
+    <app-category-edit-card
+      [selectedCategory]="selectedCategory"
+      (persistCategory)="onPutCategory($event)"
+      (deleteCategory)="onDeleteCategory($event)"
+    ></app-category-edit-card>
+  </div>
+</div>

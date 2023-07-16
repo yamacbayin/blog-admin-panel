@@ -1,0 +1,81 @@
+<div class="container">
+  <div class="user-container">
+    <div class="header-container">
+      <h1>User Info</h1>
+    </div>
+    <app-user-edit-card
+      [selectedUser]="user"
+      [detailsMode]="true"
+      (persistUser)="onPutUser($event)"
+      (deleteUser)="onDeleteUser($event)"
+    ></app-user-edit-card>
+  </div>
+
+  <div class="posts-container">
+    <div class="header-container">
+      <h1>User's Posts</h1>
+      <button
+        mat-raised-button
+        color="accent"
+        class="see-all-button"
+        [routerLink]="['/posts']"
+        [queryParams]="{ user_id: user?.user_id }"
+      >
+        See All
+      </button>
+    </div>
+
+    <div class="post-list" *ngIf="postList.length > 0; else noPostCard">
+      <div class="post-cards" *ngFor="let post of postList">
+        <app-post-card
+          [post]="post"
+          [detailsMode]="true"
+          (deletePost)="onDeletePost($event)"
+        ></app-post-card>
+      </div>
+    </div>
+    <ng-template #noPostCard>
+      <mat-card class="no-cards">
+        <mat-card-content>
+          <p>The user has not written any posts yet. Nothing to show here.</p>
+        </mat-card-content>
+      </mat-card>
+    </ng-template>
+  </div>
+
+  <div class="comments-container">
+    <div class="header-container">
+      <h1>User's Comments</h1>
+      <button
+        mat-raised-button
+        color="accent"
+        class="see-all-button"
+        [routerLink]="['/comments']"
+        [queryParams]="{ user_id: user?.user_id }"
+      >
+        See All
+      </button>
+    </div>
+    <div
+      class="comment-list"
+      *ngIf="commentList.length > 0; else noCommentCard"
+    >
+      <div class="comment-cards" *ngFor="let comment of commentList">
+        <app-comment-card
+          [comment]="comment"
+          [detailsMode]="true"
+          (deleteComment)="onDeleteComment($event)"
+        ></app-comment-card>
+      </div>
+    </div>
+    <ng-template #noCommentCard>
+      <mat-card class="no-cards">
+        <mat-card-content>
+          <p>
+            The user has not written any comments yet. Nothing to show here.
+          </p>
+        </mat-card-content>
+      </mat-card>
+    </ng-template>
+  </div>
+</div>

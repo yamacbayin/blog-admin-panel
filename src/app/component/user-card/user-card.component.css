@@ -1,0 +1,30 @@
+mat-card-header {
+  background-color: #eeeeee;
+  border-width: 0;
+  border-style: solid;
+  border-color: var(--mdc-elevated-card-container-color);
+  border-radius: var(--mdc-elevated-card-container-shape);
+  box-shadow: var(--mdc-elevated-card-container-elevation);
+  padding: 15px;
+}
+
+.mat-mdc-card-header-text,
+.mat-mdc-card-title,
+.mat-mdc-card-subtitle {
+  width: 100% !important;
+  box-sizing: border-box;
+}
+
+mat-card-content {
+  margin-top: 10px;
+}
+
+.flex-container {
+  display: flex !important;
+  flex-wrap: wrap;
+}
+
+.flex-container > span {
+  width: 50%;
+  box-sizing: border-box;
+}

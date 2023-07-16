@@ -1,0 +1,107 @@
+<mat-card class="info-card">
+  <mat-card-header class="info-header">
+    <mat-card-subtitle class="info-subtitle" fxLayoutAlign="center center"
+      >Listing {{ listingRangeStart }}-{{ listingRangeEnd }} of
+      {{ userCount }} users</mat-card-subtitle
+    >
+  </mat-card-header>
+  <mat-card-content>
+    <div class="info-content-container">
+      <div class="filter-sort-container">
+        <div class="filter-div-1">
+          <mat-form-field>
+            <mat-label>Filter by User ID</mat-label>
+            <input
+              matInput
+              [(ngModel)]="filterUserId"
+              (ngModelChange)="onFiltersChange()"
+              placeholder="Enter a user ID"
+              inputMode="numeric"
+              pattern="[0-9]*"
+            />
+          </mat-form-field>
+        </div>
+
+        <div class="filter-div-2">
+          <mat-form-field>
+            <mat-label>Filter by Username</mat-label>
+            <input
+              matInput
+              [(ngModel)]="filterUsername"
+              (ngModelChange)="onFiltersChange()"
+              placeholder="Enter a username"
+            />
+          </mat-form-field>
+        </div>
+
+        <div class="sort-div">
+          <mat-form-field>
+            <mat-label>Sort by</mat-label>
+            <mat-select [(value)]="selectedSort">
+              <mat-option
+                [value]="option.value"
+                *ngFor="let option of sortOptions"
+                >{{ option.viewValue }}</mat-option
+              >
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="create-new-container">
+        <button mat-raised-button color="primary" routerLink="/users/create">
+          Add New User
+        </button>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
+
+<div class="left-side-container">
+  <div class="left">
+    <div class="scrollable-list">
+      <div
+        class="user-cards"
+        *ngFor="
+          let user of filteredUserList
+            | sortUsers : selectedSort
+            | slice : pageIndex * pageSize : pageIndex * pageSize + pageSize
+        "
+      >
+        <app-user-card
+          [user]="user"
+          (editUser)="onEditUser($event)"
+          (deleteUser)="onDeleteUser($event)"
+        ></app-user-card>
+      </div>
+      <div class="pagination-buttons">
+        <button
+          mat-flat-button
+          color="primary"
+          (click)="onPreviousPageClick()"
+          [disabled]="pageIndex === 0"
+          class="pagination-button-previous"
+        >
+          Previous
+        </button>
+        <button
+          mat-flat-button
+          color="primary"
+          (click)="onNextPageClick()"
+          [disabled]="pageIndex === totalPage - 1"
+          class="pagination-button-next"
+        >
+          Next
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="right-side-edit-container">
+    <app-user-edit-card
+      [selectedUser]="selectedUser"
+      (persistUser)="onPutUser($event)"
+      (deleteUser)="onDeleteUser($event)"
+    ></app-user-edit-card>
+  </div>
+</div>

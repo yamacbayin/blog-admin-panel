@@ -1,0 +1,28 @@
+<mat-card class="post-card">
+  <mat-card-header class="post-card-header" (click)="onEditPost()">
+    <mat-card-title>{{ post.title }}</mat-card-title>
+    <mat-card-subtitle>Post ID: {{ post.post_id }} </mat-card-subtitle>
+    <mat-card-subtitle>Category: {{ post.category_name }} </mat-card-subtitle>
+    <mat-card-subtitle>Author: {{ post.username }} </mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content class="flex-container">
+    <span
+      >Created at:
+      {{ post.creation_date | date : "dd/MM/yyyy, HH:mm:ss" }}</span
+    >
+    <br />
+    <span>View count: {{ post.view_count }}</span>
+    <br />
+    <span>Published: {{ post.is_published }}</span>
+    <br />
+    <span>Comment count: {{ post.comment_count }}</span>
+    <br />
+  </mat-card-content>
+  <mat-card-actions align="end">
+    <button mat-button color="warn" (click)="onDeletePost()">DELETE</button>
+    <ng-container *ngIf="!detailsMode">
+      <button mat-button (click)="onEditPost()">EDIT</button>
+    </ng-container>
+    <button mat-button [routerLink]="'/posts/' + post.post_id">DETAILS</button>
+  </mat-card-actions>
+</mat-card>

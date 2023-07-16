@@ -1,0 +1,45 @@
+<div class="container">
+  <div class="category-container">
+    <div class="header-container">
+      <h1>Category Info</h1>
+    </div>
+    <app-category-edit-card
+      [selectedCategory]="category"
+      [detailsMode]="true"
+      (persistCategory)="onPutCategory($event)"
+      (deleteCategory)="onDeleteCategory($event)"
+    ></app-category-edit-card>
+  </div>
+
+  <div class="posts-container">
+    <div class="header-container">
+      <h1>Category's Posts</h1>
+      <button
+        mat-raised-button
+        color="accent"
+        class="see-all-button"
+        [routerLink]="['/posts']"
+        [queryParams]="{ category_id: category?.category_id }"
+      >
+        See All
+      </button>
+    </div>
+
+    <div class="post-list" *ngIf="postList.length > 0; else noPostCard">
+      <div class="post-cards" *ngFor="let post of postList">
+        <app-post-card
+          [post]="post"
+          [detailsMode]="true"
+          (deletePost)="onDeletePost($event)"
+        ></app-post-card>
+      </div>
+    </div>
+    <ng-template #noPostCard>
+      <mat-card class="no-cards">
+        <mat-card-content>
+          <p>The category currently has no posts. Nothing to show here.</p>
+        </mat-card-content>
+      </mat-card>
+    </ng-template>
+  </div>
+</div>

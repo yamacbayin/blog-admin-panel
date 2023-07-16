@@ -1,0 +1,29 @@
+<mat-card class="user-card">
+  <mat-card-header class="user-card-header" (click)="onEditUser()">
+    <mat-card-title>{{ user.username }}</mat-card-title>
+    <mat-card-subtitle> User ID: {{ user.user_id }} </mat-card-subtitle>
+    <mat-card-subtitle
+      >Member since:
+      {{
+        user.creation_date | date : "dd/MM/yyyy, HH:mm:ss"
+      }}</mat-card-subtitle
+    >
+  </mat-card-header>
+  <mat-card-content class="flex-container">
+    <span>E-mail: {{ user.email }}</span>
+    <br />
+    <span>Post count: {{ user.post_count }}</span>
+    <br />
+    <span>Active: {{ user.is_active }}</span>
+    <br />
+    <span>Comment count: {{ user.comment_count }}</span>
+    <br />
+  </mat-card-content>
+  <mat-card-actions align="end">
+    <button mat-button color="warn" (click)="onDeleteUser()">DELETE</button>
+    <ng-container *ngIf="!detailsMode">
+      <button mat-button (click)="onEditUser()">EDIT</button>
+    </ng-container>
+    <button mat-button [routerLink]="'/users/' + user.user_id">DETAILS</button>
+  </mat-card-actions>
+</mat-card>

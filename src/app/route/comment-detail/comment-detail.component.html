@@ -1,0 +1,39 @@
+<div class="container">
+  <div class="comment-container">
+    <div class="header-container">
+      <h1>Comment Info</h1>
+    </div>
+    <app-comment-edit-card
+      [selectedComment]="comment"
+      [detailsMode]="true"
+      (persistComment)="onPutComment($event)"
+      (deleteComment)="onDeleteComment($event)"
+    ></app-comment-edit-card>
+  </div>
+
+  <div class="user-container">
+    <div class="header-container">
+      <h1>Author</h1>
+    </div>
+    <div class="user-card">
+      <app-user-card
+        [user]="author!"
+        [detailsMode]="true"
+        (deleteUser)="onDeleteUser($event)"
+      ></app-user-card>
+    </div>
+  </div>
+
+  <div class="post-container">
+    <div class="header-container">
+      <h1>Comment's Post</h1>
+    </div>
+    <div class="post-card">
+      <app-post-card
+        [post]="post!"
+        [detailsMode]="true"
+        (deletePost)="onDeletePost($event)"
+      ></app-post-card>
+    </div>
+  </div>
+</div>

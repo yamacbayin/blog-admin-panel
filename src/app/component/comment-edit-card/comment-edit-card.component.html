@@ -1,0 +1,193 @@
+<div
+  class="comment-detail"
+  *ngIf="selectedComment || createMode; else noCardSelected"
+>
+  <mat-card class="comment-detail-card">
+    <mat-card-header>
+      <mat-card-title>
+        <ng-container *ngIf="!editMode">{{
+          selectedComment?.comment
+        }}</ng-container>
+
+        <ng-container *ngIf="editMode && !createMode">
+          Comment ID: {{ selectedComment?.comment_id }}
+        </ng-container>
+
+        <ng-container *ngIf="createMode"> Add New Comment </ng-container>
+      </mat-card-title>
+
+      <mat-card-subtitle>
+        <ng-container *ngIf="!editMode"
+          >Comment ID: {{ selectedComment?.comment_id }}
+        </ng-container>
+      </mat-card-subtitle>
+
+      <mat-card-subtitle>
+        <ng-container *ngIf="!editMode"
+          >Author ID: {{ selectedComment?.user_id }}, Name:
+          {{ selectedComment?.username }}
+        </ng-container>
+      </mat-card-subtitle>
+
+      <mat-card-subtitle>
+        <ng-container *ngIf="!editMode"
+          >Post ID: {{ selectedComment?.post_id }}, Title:
+          {{ selectedComment?.post_title }}
+        </ng-container>
+      </mat-card-subtitle>
+
+      <mat-card-subtitle>
+        <ng-container *ngIf="!editMode"
+          >Created at:
+          {{ selectedComment?.creation_date | date : "dd/MM/yyyy, HH:mm:ss" }}
+        </ng-container>
+      </mat-card-subtitle>
+
+      <mat-card-subtitle>
+        <ng-container *ngIf="!editMode"
+          >Confirmed: {{ selectedComment?.is_confirmed }}
+        </ng-container>
+      </mat-card-subtitle>
+
+      <ng-container *ngIf="!createMode">
+        <button
+          mat-stroked-button
+          [color]="editMode ? 'warn' : 'primary'"
+          class="toggle-edit-button"
+          (click)="toggleEditMode()"
+        >
+          {{ editMode ? "CANCEL" : "EDIT" }}
+        </button>
+      </ng-container>
+    </mat-card-header>
+
+    <mat-card-content>
+      <ng-container *ngIf="!editMode">
+        <p style="white-space: pre-wrap">{{ selectedComment?.comment }}</p>
+      </ng-container>
+
+      <ng-container *ngIf="editMode">
+        <mat-form-field>
+          <mat-label>Select Author</mat-label>
+          <mat-select [(value)]="author">
+            <mat-option
+              [value]="option"
+              *ngFor="let option of selectUserOptions"
+              >{{ option.username }}</mat-option
+            >
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Select Post</mat-label>
+          <mat-select [(value)]="post">
+            <mat-option
+              [value]="option"
+              *ngFor="let option of selectPostOptions"
+              >{{ option.title }}</mat-option
+            >
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Creation Date</mat-label>
+          <input
+            matInput
+            [(ngModel)]="editedComment.creation_date"
+            class="edit-input"
+            placeholder="Leave blank to use server time"
+          />
+          <button
+            *ngIf="editedComment.creation_date"
+            matSuffix
+            mat-icon-button
+            aria-label="Clear"
+            (click)="editedComment.creation_date = ''"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+
+        <div class="pickers">
+          <mat-form-field class="date-picker">
+            <mat-label>Date</mat-label>
+            <input
+              matInput
+              [matDatepicker]="picker"
+              [(ngModel)]="pickedDate"
+              (ngModelChange)="onDateChange()"
+            />
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="picker"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+
+          <input
+            class="time-picker"
+            type="time"
+            [(ngModel)]="pickedTime"
+            (ngModelChange)="onDateChange()"
+          />
+        </div>
+
+        <br />
+
+        <mat-checkbox
+          [(ngModel)]="editedComment.is_confirmed"
+          class="edit-input"
+          >Confirmed</mat-checkbox
+        >
+
+        <br />
+
+        <mat-form-field appearance="fill" class="text-area">
+          <mat-label>Comment</mat-label>
+          <textarea
+            cdkTextareaAutosize
+            #autosize="cdkTextareaAutosize"
+            cdkAutosizeMinRows="1"
+            cdkAutosizeMaxRows="10"
+            matInput
+            [(ngModel)]="editedComment.comment"
+            class="text-input"
+          ></textarea>
+        </mat-form-field>
+      </ng-container>
+    </mat-card-content>
+
+    <mat-card-actions align="end">
+      <ng-container *ngIf="!createMode">
+        <button mat-button color="warn" (click)="onDeleteComment()">
+          DELETE
+        </button>
+
+        <ng-container *ngIf="!detailsMode">
+          <button
+            mat-button
+            [routerLink]="'/comments/' + selectedComment!.comment_id"
+          >
+            DETAILS
+          </button>
+        </ng-container>
+      </ng-container>
+
+      <ng-container *ngIf="createMode">
+        <button mat-button color="warn" routerLink="/users">CANCEL</button>
+      </ng-container>
+
+      <button mat-button [disabled]="!editMode" (click)="onSaveOrUpdateClick()">
+        {{ createMode ? "CREATE" : "UPDATE" }}
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>
+
+<ng-template #noCardSelected>
+  <mat-card class="no-card-selected">
+    <mat-card-content>
+      <p>Click on a card's header to edit</p>
+    </mat-card-content>
+  </mat-card>
+</ng-template>

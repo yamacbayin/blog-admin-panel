@@ -1,0 +1,216 @@
+<div
+  class="post-detail"
+  *ngIf="selectedPost || createMode; else noCardSelected"
+>
+  <mat-card class="post-detail-card">
+    <mat-card-header>
+      <mat-card-title>
+        <ng-container *ngIf="!editMode">{{ selectedPost?.title }}</ng-container>
+        <ng-container *ngIf="editMode && !createMode">
+          Post ID: {{ selectedPost?.post_id }}
+        </ng-container>
+        <ng-container *ngIf="createMode"> Add New Post </ng-container>
+      </mat-card-title>
+
+      <mat-card-subtitle>
+        <ng-container *ngIf="!editMode">
+          Post ID: {{ selectedPost?.post_id }}
+        </ng-container>
+      </mat-card-subtitle>
+
+      <mat-card-subtitle>
+        <ng-container *ngIf="!editMode"
+          >Category ID: {{ selectedPost?.category_id }}, Name:
+          {{ selectedPost?.category_name }}
+        </ng-container>
+      </mat-card-subtitle>
+
+      <mat-card-subtitle>
+        <ng-container *ngIf="!editMode"
+          >Author ID: {{ selectedPost?.user_id }}, Name:
+          {{ selectedPost?.username }}
+        </ng-container>
+      </mat-card-subtitle>
+
+      <mat-card-subtitle>
+        <ng-container *ngIf="!editMode"
+          >Created at:
+          {{ selectedPost?.creation_date | date : "dd/MM/yyyy, HH:mm:ss" }}
+        </ng-container>
+      </mat-card-subtitle>
+
+      <mat-card-subtitle>
+        <ng-container *ngIf="!editMode"
+          >View Count: {{ selectedPost?.view_count }}
+        </ng-container>
+      </mat-card-subtitle>
+
+      <mat-card-subtitle>
+        <ng-container *ngIf="!editMode"
+          >Published: {{ selectedPost?.is_published }}
+        </ng-container>
+      </mat-card-subtitle>
+
+      <mat-card-subtitle>
+        <ng-container *ngIf="!editMode"
+          >Post Comments {{ selectedPost?.comment_count }}
+        </ng-container>
+      </mat-card-subtitle>
+
+      <ng-container *ngIf="!createMode">
+        <button
+          mat-stroked-button
+          [color]="editMode ? 'warn' : 'primary'"
+          class="toggle-edit-button"
+          (click)="toggleEditMode()"
+        >
+          {{ editMode ? "CANCEL" : "EDIT" }}
+        </button>
+      </ng-container>
+    </mat-card-header>
+
+    <mat-card-content>
+      <ng-container *ngIf="!editMode">
+        <p style="white-space: pre-wrap">{{ selectedPost?.content }}</p>
+      </ng-container>
+
+      <ng-container *ngIf="editMode">
+        <mat-form-field appearance="fill">
+          <mat-label>Title</mat-label>
+          <input
+            matInput
+            [(ngModel)]="editedPost.title"
+            class="edit-input"
+            maxlength="50"
+          />
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Select Author</mat-label>
+          <mat-select [(value)]="author">
+            <mat-option
+              [value]="option"
+              *ngFor="let option of selectUserOptions"
+              >{{ option.username }}</mat-option
+            >
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Select Category</mat-label>
+          <mat-select [(value)]="category">
+            <mat-option
+              [value]="option"
+              *ngFor="let option of selectCategoryOptions"
+              >{{ option.name }}</mat-option
+            >
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Creation Date</mat-label>
+          <input
+            matInput
+            [(ngModel)]="editedPost.creation_date"
+            class="edit-input"
+            placeholder="Leave blank to use server time"
+          />
+          <button
+            *ngIf="editedPost.creation_date"
+            matSuffix
+            mat-icon-button
+            aria-label="Clear"
+            (click)="editedPost.creation_date = ''"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+
+        <div class="pickers">
+          <mat-form-field class="date-picker">
+            <mat-label>Date</mat-label>
+            <input
+              matInput
+              [matDatepicker]="picker"
+              [(ngModel)]="pickedDate"
+              (ngModelChange)="onDateChange()"
+            />
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="picker"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+
+          <input
+            class="time-picker"
+            type="time"
+            [(ngModel)]="pickedTime"
+            (ngModelChange)="onDateChange()"
+          />
+        </div>
+
+        <mat-form-field appearance="fill">
+          <mat-label>View Count</mat-label>
+          <input
+            matInput
+            [(ngModel)]="editedPost.view_count"
+            class="edit-input"
+            placeholder="Leave blank to use server time"
+          />
+        </mat-form-field>
+
+        <br />
+
+        <ng-container *ngIf="editMode">
+          <mat-checkbox [(ngModel)]="editedPost.is_published" class="edit-input"
+            >Published</mat-checkbox
+          >
+        </ng-container>
+
+        <br />
+
+        <mat-form-field appearance="fill" class="text-area">
+          <mat-label>Content</mat-label>
+          <textarea
+            cdkTextareaAutosize
+            #autosize="cdkTextareaAutosize"
+            cdkAutosizeMinRows="1"
+            cdkAutosizeMaxRows="30"
+            matInput
+            [(ngModel)]="editedPost.content"
+            class="text-input"
+          ></textarea>
+        </mat-form-field>
+      </ng-container>
+    </mat-card-content>
+
+    <mat-card-actions align="end">
+      <ng-container *ngIf="!createMode">
+        <button mat-button color="warn" (click)="onDeletePost()">DELETE</button>
+
+        <ng-container *ngIf="!detailsMode">
+          <button mat-button [routerLink]="'/posts/' + selectedPost!.post_id">
+            DETAILS
+          </button>
+        </ng-container>
+      </ng-container>
+
+      <ng-container *ngIf="createMode">
+        <button mat-button color="warn" routerLink="/users">CANCEL</button>
+      </ng-container>
+
+      <button mat-button [disabled]="!editMode" (click)="onSaveOrUpdateClick()">
+        {{ createMode ? "CREATE" : "UPDATE" }}
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>
+
+<ng-template #noCardSelected>
+  <mat-card class="no-card-selected">
+    <mat-card-content>
+      <p>Click on a card's header to edit</p>
+    </mat-card-content>
+  </mat-card>
+</ng-template>

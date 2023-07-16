@@ -1,0 +1,134 @@
+<div
+  class="category-detail"
+  *ngIf="selectedCategory || createMode; else noCardSelected"
+>
+  <mat-card class="category-detail-card">
+    <mat-card-header>
+      <mat-card-title>
+        <ng-container *ngIf="!editMode">{{
+          selectedCategory?.name
+        }}</ng-container>
+
+        <ng-container *ngIf="editMode && !createMode">
+          Category ID: {{ selectedCategory?.category_id }}
+        </ng-container>
+
+        <ng-container *ngIf="createMode"> Add New Category </ng-container>
+      </mat-card-title>
+
+      <mat-card-subtitle>
+        <ng-container *ngIf="!editMode">
+          Category ID: {{ selectedCategory?.category_id }}
+        </ng-container>
+      </mat-card-subtitle>
+
+      <ng-container *ngIf="!createMode">
+        <button
+          mat-stroked-button
+          [color]="editMode ? 'warn' : 'primary'"
+          class="toggle-edit-button"
+          (click)="toggleEditMode()"
+        >
+          {{ editMode ? "CANCEL" : "EDIT" }}
+        </button>
+      </ng-container>
+    </mat-card-header>
+
+    <mat-card-content>
+      <ng-container *ngIf="!editMode">
+        <p>
+          Created at:
+          {{ selectedCategory?.creation_date | date : "dd/MM/yyyy, HH:mm:ss" }}
+        </p>
+      </ng-container>
+
+      <ng-container *ngIf="editMode">
+        <mat-form-field appearance="fill">
+          <mat-label>Category Name</mat-label>
+          <input
+            matInput
+            [(ngModel)]="editedCategory.name"
+            class="edit-input"
+            maxlength="30"
+          />
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Creation Date</mat-label>
+          <input
+            matInput
+            [(ngModel)]="editedCategory.creation_date"
+            class="edit-input"
+            placeholder="Leave blank to use server time"
+          />
+        </mat-form-field>
+        <button
+          *ngIf="editedCategory.creation_date"
+          matSuffix
+          mat-icon-button
+          aria-label="Clear"
+          (click)="editedCategory.creation_date = ''"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+
+        <div class="pickers">
+          <mat-form-field class="date-picker">
+            <mat-label>Date</mat-label>
+            <input
+              matInput
+              [matDatepicker]="picker"
+              [(ngModel)]="pickedDate"
+              (ngModelChange)="onDateChange()"
+            />
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="picker"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+
+          <input
+            class="time-picker"
+            type="time"
+            [(ngModel)]="pickedTime"
+            (ngModelChange)="onDateChange()"
+          />
+        </div>
+      </ng-container>
+    </mat-card-content>
+
+    <mat-card-actions align="end">
+      <ng-container *ngIf="!createMode">
+        <button mat-button color="warn" (click)="onDeleteCategory()">
+          DELETE
+        </button>
+
+        <ng-container *ngIf="!detailsMode">
+          <button
+            mat-button
+            [routerLink]="'/categories/' + selectedCategory!.category_id"
+          >
+            DETAILS
+          </button>
+        </ng-container>
+      </ng-container>
+
+      <ng-container *ngIf="createMode">
+        <button mat-button color="warn" routerLink="/categories">CANCEL</button>
+      </ng-container>
+
+      <button mat-button [disabled]="!editMode" (click)="onSaveOrUpdateClick()">
+        {{ createMode ? "CREATE" : "UPDATE" }}
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>
+
+<ng-template #noCardSelected>
+  <mat-card class="no-card-selected">
+    <mat-card-content>
+      <p>Click on a card's header to edit</p>
+    </mat-card-content>
+  </mat-card>
+</ng-template>

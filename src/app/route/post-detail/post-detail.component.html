@@ -1,0 +1,73 @@
+<div class="container">
+  <div class="post-container">
+    <div class="header-container">
+      <h1>Post Info</h1>
+    </div>
+    <app-post-edit-card
+      [selectedPost]="post"
+      [detailsMode]="true"
+      (persistPost)="onPutPost($event)"
+      (deletePost)="onDeletePost($event)"
+    ></app-post-edit-card>
+  </div>
+
+  <div class="user-container">
+    <div class="header-container">
+      <h1>Author</h1>
+    </div>
+    <div class="user-card">
+      <app-user-card
+        [user]="author!"
+        [detailsMode]="true"
+        (deleteUser)="onDeleteUser($event)"
+      ></app-user-card>
+    </div>
+  </div>
+
+  <div class="category-container">
+    <div class="header-container">
+      <h1>Post's Category</h1>
+    </div>
+    <div class="category-card">
+      <app-category-card
+        [category]="category!"
+        [detailsMode]="true"
+        (deleteCategory)="onDeleteCategory($event)"
+      ></app-category-card>
+    </div>
+  </div>
+
+  <div class="comment-container">
+    <div class="header-container">
+      <h1>Post's Comments</h1>
+      <button
+        mat-raised-button
+        color="accent"
+        class="see-all-button"
+        [routerLink]="['/comments']"
+        [queryParams]="{ post_id: post?.post_id }"
+      >
+        See All
+      </button>
+    </div>
+    <div
+      class="comment-list"
+      *ngIf="commentList.length > 0; else noCommentCard"
+    >
+      <div class="comment-cards" *ngFor="let comment of commentList">
+        <app-comment-card
+          [comment]="comment"
+          [detailsMode]="true"
+          (deleteComment)="onDeleteComment($event)"
+        ></app-comment-card>
+      </div>
+    </div>
+    <ng-template #noCommentCard>
+      <mat-card class="no-cards">
+        <mat-card-content>
+          <p>The post currently has no comments. Nothing to show here.</p>
+        </mat-card-content>
+      </mat-card>
+    </ng-template>
+  </div>
+</div>

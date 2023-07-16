@@ -1,0 +1,35 @@
+.container {
+  display: grid;
+  place-items: center;
+  padding: 20px;
+}
+
+.category-container,
+.posts-container {
+  width: 70%;
+  margin-top: 20px;
+}
+
+h1 {
+  font-size: x-large;
+  color: white;
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 10px;
+}
+
+.header-container h1 {
+  margin: 0;
+}
+
+.see-all-button {
+  margin-left: 10px;
+}
+
+.post-cards {
+  margin-top: 5px;
+}

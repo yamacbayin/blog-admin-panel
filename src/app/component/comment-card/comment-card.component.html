@@ -1,0 +1,29 @@
+<mat-card class="comment-card">
+  <mat-card-header class="comment-card-header" (click)="onEditComment()">
+    <mat-card-title>{{ comment.comment }}</mat-card-title>
+    <mat-card-subtitle>
+      Comment ID: {{ comment.comment_id }}
+    </mat-card-subtitle>
+    <mat-card-subtitle>Author: {{ comment.username }}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content class="flex-container">
+    <span>On post: {{ comment.post_title }}</span>
+    <br />
+    <span
+      >Created at:
+      {{ comment.creation_date | date : "dd/MM/yyyy, HH:mm:ss" }}</span
+    >
+    <br />
+    <span>Confirmed: {{ comment.is_confirmed }}</span>
+    <br />
+  </mat-card-content>
+  <mat-card-actions align="end">
+    <button mat-button color="warn" (click)="onDeleteComment()">DELETE</button>
+    <ng-container *ngIf="!detailsMode">
+      <button mat-button (click)="onEditComment()">EDIT</button>
+    </ng-container>
+    <button mat-button [routerLink]="'/comments/' + comment.comment_id">
+      DETAILS
+    </button>
+  </mat-card-actions>
+</mat-card>

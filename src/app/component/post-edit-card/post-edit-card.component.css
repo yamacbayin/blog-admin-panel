@@ -1,0 +1,36 @@
+mat-card-header {
+  padding: 15px;
+}
+
+.toggle-edit-button {
+  margin-left: auto;
+}
+
+mat-card-content {
+  margin-top: 10px;
+  height: fit-content;
+}
+
+.no-card-selected {
+  align-items: center;
+  padding-bottom: 10px;
+}
+
+mat-form-field {
+  width: 70%;
+}
+
+.text-area {
+  width: 100%;
+  height: 530px;
+}
+
+.pickers {
+  width: 70%;
+  display: flex;
+  align-items: flex-start;
+}
+
+.pickers > .time-picker {
+  margin-left: 100px;
+}
